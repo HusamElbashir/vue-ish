@@ -1,0 +1,31 @@
+{
+  "name": "vue-reactivity-experiment",
+  "version": "1.0.0",
+  "description": "A simple experiment to implement Vue.js's reactivity system.",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "dev": "webpack --watch",
+    "build": "webpack",
+    "test": "jest"
+  },
+  "installConfig": {
+    "pnp": true
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.js$": "babel-jest"
+    },
+    "moduleNameMapper" : {
+      "~(.*)$": "<rootDir>/src/$1"
+    }
+  },
+  "devDependencies": {
+    "@babel/core": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "babel-jest": "^24.8.0",
+    "jest": "^24.8.0",
+    "webpack": "^4.36.1",
+    "webpack-cli": "^3.3.6"
+  }
+}
