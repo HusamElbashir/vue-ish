@@ -7,6 +7,8 @@
   "scripts": {
     "dev": "webpack --watch",
     "build": "webpack",
+    "lint": "eslint --ext .js src test",
+    "lint:autofix": "yarn lint --fix",
     "test": "jest"
   },
   "installConfig": {
@@ -16,7 +18,7 @@
     "transform": {
       "^.+\\.js$": "babel-jest"
     },
-    "moduleNameMapper" : {
+    "moduleNameMapper": {
       "~(.*)$": "<rootDir>/src/$1"
     }
   },
@@ -24,7 +26,12 @@
     "@babel/core": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
     "babel-jest": "^24.8.0",
+    "eslint": "^6.1.0",
+    "eslint-config-prettier": "^6.0.0",
+    "eslint-plugin-import": "^2.17.2",
+    "eslint-plugin-prettier": "^3.1.0",
     "jest": "^24.8.0",
+    "prettier": "^1.18.2",
     "webpack": "^4.36.1",
     "webpack-cli": "^3.3.6"
   }

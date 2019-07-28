@@ -1,0 +1,29 @@
+{
+  "root": true,
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module"
+  },
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "extends": [
+    "prettier",
+    "prettier/standard"
+  ],
+  "plugins": [
+    "prettier"
+  ],
+  "rules": {
+    "prettier/prettier": [
+      "error",
+      {
+        "trailingComma": "es5",
+        "semi": false,
+        "singleQuote": true,
+        "printWidth": 120
+      }
+    ]
+  }
+}
