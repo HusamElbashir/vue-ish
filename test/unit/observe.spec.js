@@ -13,36 +13,46 @@ describe('observer', () => {
     })
   })
 
-  it('getter', () => {
-    const obj = { foo: 'bar' }
-    const observedObj = observe(obj)
-    const _log = console.log
-    console.log = jest.fn()
+  describe('getter/setter', () => {
+    let spy
 
-    // should return the value of a property
-    expect(observedObj.foo).toBe('bar')
-
-    // should console.log the value
-    expect(console.log).toHaveBeenCalledWith('getting key "foo": bar')
+    // spy on console.log
+    beforeAll(() => {
+      spy = jest.spyOn(console, 'log')
+      spy.mockImplementation(() => {})
+    })
 
     // restore console.log behavior
-    console.log = _log
-  })
+    afterAll(() => {
+      spy.mockRestore()
+    })
 
-  it('setter', () => {
-    const obj = { foo: 'bar' }
-    const observedObj = observe(obj)
-    const _log = console.log
-    console.log = jest.fn()
+    // cleanup calls and other mock info
+    beforeEach(() => {
+      spy.mockClear()
+    })
 
-    // should set the value of a property to a new value
-    observedObj.foo = 'baz'
-    expect(observedObj.foo).toBe('baz')
+    it('getter', () => {
+      const obj = { foo: 'bar' }
+      const observedObj = observe(obj)
 
-    // should console.log the new value
-    expect(console.log).toHaveBeenCalledWith('setting key "foo" to: baz')
+      // should return the value of a property
+      expect(observedObj.foo).toBe('bar')
 
-    // restore console.log behavior
-    console.log = _log
+      // should console.log the value
+      expect(spy).toHaveBeenCalledWith('getting key "foo": bar')
+    })
+
+    it('setter', () => {
+      const obj = { foo: 'bar' }
+      const observedObj = observe(obj)
+
+      // should set the value of a property to a new value
+      observedObj.foo = 'baz'
+      expect(observedObj.foo).toBe('baz')
+
+      // should console.log the new value
+      expect(spy).toHaveBeenCalledWith('setting key "foo" to: baz')
+    })
   })
 })
