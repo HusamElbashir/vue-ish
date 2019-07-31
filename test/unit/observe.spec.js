@@ -1,4 +1,4 @@
-import observe from '~/observe'
+import observe from '@/observe'
 
 describe('observer', () => {
   it('converts object properties into getters/setters', () => {

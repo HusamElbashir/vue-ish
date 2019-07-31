@@ -20,7 +20,7 @@
       "^.+\\.js$": "babel-jest"
     },
     "moduleNameMapper": {
-      "~(.*)$": "<rootDir>/src/$1"
+      "@(?!babel|jest)(.*)$": "<rootDir>/src/$1"
     }
   },
   "devDependencies": {
