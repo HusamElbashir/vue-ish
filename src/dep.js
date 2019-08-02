@@ -1,20 +1,20 @@
 class Dep {
   constructor() {
-    this.deps = new Set()
+    this.subs = new Set()
   }
 
-  // collect the current activeComputation -
-  // meaning that it depends on this dependency.
+  // collect the current activeComputation as a
+  // subscriber - meaning that it depends on this dependency.
   depend() {
     if (Dep.activeComputation) {
-      this.deps.add(Dep.activeComputation)
+      this.subs.add(Dep.activeComputation)
     }
   }
 
   // invoke all computations that depend on
   // this dependency.
   notify() {
-    this.deps.forEach(dep => dep())
+    this.subs.forEach(dep => dep())
   }
 }
 
