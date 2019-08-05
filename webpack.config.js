@@ -1,9 +1,11 @@
 const path = require('path')
 
 module.exports = {
-  entry: ['./main.js'],
+  mode: 'development',
+  entry: './src/index.js',
   output: {
-    filename: 'bundle.js',
+    filename: 'vueish.js',
     path: path.resolve(__dirname, 'dist'),
   },
+  devtool: 'source-map',
 }
