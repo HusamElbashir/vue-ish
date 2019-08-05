@@ -1,7 +1,6 @@
 {
-  "name": "vue-reactivity-experiment",
-  "version": "1.0.0",
-  "description": "A simple experiment to implement Vue.js's reactivity system.",
+  "name": "vue-ish",
+  "description": "A bare-bones implementation of Vue.js-like reactivity",
   "license": "MIT",
   "private": true,
   "scripts": {
