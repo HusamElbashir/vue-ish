@@ -1,5 +1,9 @@
+import config from '@/config'
 import observe from '@/observe'
 import Dep from '@/dep'
+
+// cache config settings to be restored at the end of the test
+const _config = JSON.parse(JSON.stringify(config))
 
 jest.mock('@/dep')
 
@@ -30,15 +34,17 @@ describe('observer', () => {
       spy.mockImplementation(() => {})
     })
 
-    // restore console.log behavior
+    // restore console.log behavior and config settings
     afterAll(() => {
       spy.mockRestore()
+      config = _config
     })
 
-    // cleanup calls and other mock info
+    // cleanup calls and other mock info + switch off verbose
     beforeEach(() => {
       Dep.mockClear()
       spy.mockClear()
+      config.verbose = false
     })
 
     it('getter', () => {
@@ -53,11 +59,16 @@ describe('observer', () => {
       // should return the value of a property
       expect(observedObj.foo).toBe('bar')
 
-      // should console.log the value
-      expect(spy).toHaveBeenCalledWith('getting key "foo": bar')
+      // should not console.log the value (verbose is false)
+      expect(spy).not.toHaveBeenCalled()
 
       // should call dep.depend
       expect(dep.depend).toHaveBeenCalled()
+
+      // should console.log the value if 'verbose' is true
+      config.verbose = true
+      observedObj.foo
+      expect(spy).toHaveBeenCalledWith('getting key "foo": bar')
     })
 
     it('setter', () => {
@@ -73,11 +84,16 @@ describe('observer', () => {
       observedObj.foo = 'baz'
       expect(observedObj.foo).toBe('baz')
 
-      // should console.log the new value
-      expect(spy).toHaveBeenCalledWith('setting key "foo" to: baz')
+      // should not console.log the new value (verbose is false)
+      expect(spy).not.toHaveBeenCalled()
 
       // should call dep.notify
       expect(dep.notify).toHaveBeenCalled()
+
+      // should console.log the new value if 'verbose' is true
+      config.verbose = true
+      observedObj.foo = 'baz'
+      expect(spy).toHaveBeenCalledWith('setting key "foo" to: baz')
     })
   })
 })

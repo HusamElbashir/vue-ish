@@ -1,3 +1,4 @@
+import config from './config'
 import Dep from './dep'
 
 // walks over an object's properties and converts them into
@@ -11,12 +12,12 @@ export default function observe(obj) {
       configurable: true,
       enumerable: true,
       get() {
-        console.log(`getting key "${key}": ${value}`)
+        config.verbose && console.log(`getting key "${key}": ${value}`)
         dep.depend()
         return value
       },
       set(newValue) {
-        console.log(`setting key "${key}" to: ${newValue}`)
+        config.verbose && console.log(`setting key "${key}" to: ${newValue}`)
         value = newValue
         dep.notify()
       },
