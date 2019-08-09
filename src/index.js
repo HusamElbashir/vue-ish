@@ -5,5 +5,5 @@ import autoRun from './autoRun'
 window.vueish = {
   config,
   observe,
-  autorun,
+  autoRun,
 }
