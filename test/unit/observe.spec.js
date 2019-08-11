@@ -15,10 +15,14 @@ describe('observer', () => {
     Object.keys(observedObj).forEach(key => {
       const propertyDescriptor = Object.getOwnPropertyDescriptor(observedObj, key)
 
-      expect(propertyDescriptor.configurable).toBe(true)
-      expect(propertyDescriptor.enumerable).toBe(true)
-      expect(typeof propertyDescriptor.get).toBe('function')
-      expect(typeof propertyDescriptor.set).toBe('function')
+      expect(propertyDescriptor).toEqual(
+        expect.objectContaining({
+          configurable: true,
+          enumerable: true,
+          get: expect.any(Function),
+          set: expect.any(Function),
+        })
+      )
     })
 
     // Dep should be instantiated for each observed object property
