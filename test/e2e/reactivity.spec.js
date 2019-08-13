@@ -1,5 +1,5 @@
-import observe from '@/observe'
-import autoRun from '@/autoRun'
+import observe from '@/js/observe'
+import autoRun from '@/js/autoRun'
 
 describe('basic reactivity', () => {
   it('reacts', () => {

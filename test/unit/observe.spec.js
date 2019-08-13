@@ -1,11 +1,11 @@
-import config from '@/config'
-import observe from '@/observe'
-import Dep from '@/dep'
+import config from '@/js/config'
+import observe from '@/js/observe'
+import Dep from '@/js/dep'
 
 // cache config settings to be restored at the end of the test
 const _config = JSON.parse(JSON.stringify(config))
 
-jest.mock('@/dep')
+jest.mock('@/js/dep')
 
 describe('observer', () => {
   it('converts object properties into getters/setters', () => {

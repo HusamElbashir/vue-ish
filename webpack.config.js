@@ -5,7 +5,7 @@ const HTMLWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = ({ prod }) => ({
   mode: prod ? 'production' : 'development',
-  entry: './src/index.js',
+  entry: './src/js/index.js',
   output: {
     filename: 'vue-ish.js',
     path: path.resolve(__dirname, 'dist'),
