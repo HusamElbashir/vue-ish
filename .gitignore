@@ -1,4 +1,6 @@
 node_modules
 .pnp.js
 yarn-error.log
+.yarn
+.yarnrc
 coverage
