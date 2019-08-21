@@ -8,7 +8,11 @@ const _config = JSON.parse(JSON.stringify(config))
 jest.mock('@/js/dep')
 
 describe('observer', () => {
-  it('converts object properties into getters/setters', () => {
+  beforeEach(() => {
+    Dep.mockClear()
+  })
+
+  it('observes by converting object properties into getters/setters', () => {
     const obj = { foo: 1, bar: 2, baz: 3 }
     const observedObj = observe(obj)
 
@@ -27,6 +31,39 @@ describe('observer', () => {
 
     // Dep should be instantiated for each observed object property
     expect(Dep).toHaveBeenCalledTimes(3)
+  })
+
+  it('deep observes', () => {
+    const obj = { foo: { a: 1, b: 2, c: 3 } }
+    const observedObj = observe(obj)
+
+    // observes foo
+    let propertyDescriptor = Object.getOwnPropertyDescriptor(observedObj, 'foo')
+    expect(propertyDescriptor).toEqual(
+      expect.objectContaining({
+        configurable: true,
+        enumerable: true,
+        get: expect.any(Function),
+        set: expect.any(Function),
+      })
+    )
+
+    // observes a, b and c
+    Object.keys(observedObj.foo).forEach(key => {
+      propertyDescriptor = Object.getOwnPropertyDescriptor(observedObj.foo, key)
+
+      expect(propertyDescriptor).toEqual(
+        expect.objectContaining({
+          configurable: true,
+          enumerable: true,
+          get: expect.any(Function),
+          set: expect.any(Function),
+        })
+      )
+    })
+
+    // Dep should be instantiated for each observed object property
+    expect(Dep).toHaveBeenCalledTimes(4)
   })
 
   describe('getter/setter', () => {

@@ -23,6 +23,9 @@ export default function observe(obj) {
         return newValue
       },
     })
+
+    // deep observe
+    if (typeof value === 'object') observe(value)
   })
   return obj
 }
