@@ -10,8 +10,24 @@ module.exports = ({ prod }) => ({
     filename: 'vue-ish.js',
     path: path.resolve(__dirname, 'dist'),
   },
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env'],
+          },
+        },
+      },
+    ],
+  },
   resolve: {
     plugins: [PnpWebpackPlugin],
+  },
+  resolveLoader: {
+    plugins: [PnpWebpackPlugin.moduleLoader(module)],
   },
   devtool: prod ? 'source-map' : 'eval-source-map',
   plugins: [
