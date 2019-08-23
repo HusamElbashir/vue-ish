@@ -20,7 +20,6 @@ export default function observe(obj) {
         config.verbose && console.log(`setting key "${key}" to: ${newValue}`)
         value = newValue
         dep.notify()
-        return newValue
       },
     })
 
