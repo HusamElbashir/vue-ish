@@ -18,6 +18,7 @@ export default function observe(obj) {
       },
       set(newValue) {
         config.verbose && console.log(`setting key "${key}" to: ${newValue}`)
+        if (typeof newValue === 'object') observe(newValue) // deep observe
         value = newValue
         dep.notify()
       },

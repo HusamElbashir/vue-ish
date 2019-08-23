@@ -33,7 +33,7 @@ describe('observer', () => {
     expect(Dep).toHaveBeenCalledTimes(3)
   })
 
-  it('deep observes', () => {
+  it('deep observes on initialization', () => {
     const obj = { foo: { a: 1, b: 2, c: 3 } }
     const observedObj = observe(obj)
 
@@ -52,6 +52,28 @@ describe('observer', () => {
     Object.keys(observedObj.foo).forEach(key => {
       propertyDescriptor = Object.getOwnPropertyDescriptor(observedObj.foo, key)
 
+      expect(propertyDescriptor).toEqual(
+        expect.objectContaining({
+          configurable: true,
+          enumerable: true,
+          get: expect.any(Function),
+          set: expect.any(Function),
+        })
+      )
+    })
+
+    // Dep should be instantiated for each observed object property
+    expect(Dep).toHaveBeenCalledTimes(4)
+  })
+
+  it('deep observes when a reactive property is set to an object', () => {
+    const obj = { foo: '' }
+    const observedObj = observe(obj)
+
+    observedObj.foo = { a: 1, b: 2, c: 3 }
+
+    Object.keys(observedObj.foo).forEach(key => {
+      const propertyDescriptor = Object.getOwnPropertyDescriptor(observedObj.foo, key)
       expect(propertyDescriptor).toEqual(
         expect.objectContaining({
           configurable: true,
