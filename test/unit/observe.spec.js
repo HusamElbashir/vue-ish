@@ -2,6 +2,35 @@ import config from '@/js/config'
 import observe from '@/js/observe'
 import Dep from '@/js/dep'
 
+// custom matcher to check if an object is observed
+expect.extend({
+  toBeObserved(received) {
+    const pass =
+      typeof received === 'object' &&
+      Object.getOwnPropertyNames(received).every(key => {
+        const propertyDescriptor = Object.getOwnPropertyDescriptor(received, key)
+        return (
+          propertyDescriptor.configurable === true &&
+          propertyDescriptor.enumerable === true &&
+          typeof propertyDescriptor.get === 'function' &&
+          typeof propertyDescriptor.set === 'function'
+        )
+      })
+
+    if (pass) {
+      return {
+        message: () => `expected ${received} not to be observed`,
+        pass: true,
+      }
+    } else {
+      return {
+        message: () => `expected ${received} to be observed`,
+        pass: false,
+      }
+    }
+  },
+})
+
 // cache config settings to be restored at the end of the test
 const _config = JSON.parse(JSON.stringify(config))
 
@@ -13,76 +42,35 @@ describe('observer', () => {
   })
 
   it('observes by converting object properties into getters/setters', () => {
-    const obj = { foo: 1, bar: 2, baz: 3 }
-    const observedObj = observe(obj)
+    const obj = observe({ foo: 1, bar: 2, baz: 3 })
 
-    Object.keys(observedObj).forEach(key => {
-      const propertyDescriptor = Object.getOwnPropertyDescriptor(observedObj, key)
-
-      expect(propertyDescriptor).toEqual(
-        expect.objectContaining({
-          configurable: true,
-          enumerable: true,
-          get: expect.any(Function),
-          set: expect.any(Function),
-        })
-      )
-    })
+    expect(obj).toBeObserved()
 
     // Dep should be instantiated for each observed object property
     expect(Dep).toHaveBeenCalledTimes(3)
   })
 
   it('deep observes on initialization', () => {
-    const obj = { foo: { a: 1, b: 2, c: 3 } }
-    const observedObj = observe(obj)
+    const obj = observe({ foo: { a: 1, b: 2, c: 3 } })
 
-    // observes foo
-    let propertyDescriptor = Object.getOwnPropertyDescriptor(observedObj, 'foo')
-    expect(propertyDescriptor).toEqual(
-      expect.objectContaining({
-        configurable: true,
-        enumerable: true,
-        get: expect.any(Function),
-        set: expect.any(Function),
-      })
-    )
+    // converts foo into a reactive property
+    expect(obj).toBeObserved()
 
-    // observes a, b and c
-    Object.keys(observedObj.foo).forEach(key => {
-      propertyDescriptor = Object.getOwnPropertyDescriptor(observedObj.foo, key)
-
-      expect(propertyDescriptor).toEqual(
-        expect.objectContaining({
-          configurable: true,
-          enumerable: true,
-          get: expect.any(Function),
-          set: expect.any(Function),
-        })
-      )
-    })
+    // converts a, b and c into reactive properties
+    expect(obj.foo).toBeObserved()
 
     // Dep should be instantiated for each observed object property
     expect(Dep).toHaveBeenCalledTimes(4)
   })
 
   it('deep observes when a reactive property is set to an object', () => {
-    const obj = { foo: '' }
-    const observedObj = observe(obj)
+    const obj = observe({ foo: '' })
 
-    observedObj.foo = { a: 1, b: 2, c: 3 }
+    expect(obj.foo).not.toBeObserved()
 
-    Object.keys(observedObj.foo).forEach(key => {
-      const propertyDescriptor = Object.getOwnPropertyDescriptor(observedObj.foo, key)
-      expect(propertyDescriptor).toEqual(
-        expect.objectContaining({
-          configurable: true,
-          enumerable: true,
-          get: expect.any(Function),
-          set: expect.any(Function),
-        })
-      )
-    })
+    obj.foo = { a: 1, b: 2, c: 3 }
+
+    expect(obj.foo).toBeObserved()
 
     // Dep should be instantiated for each observed object property
     expect(Dep).toHaveBeenCalledTimes(4)
@@ -111,8 +99,7 @@ describe('observer', () => {
     })
 
     it('getter', () => {
-      const obj = { foo: 'bar' }
-      const observedObj = observe(obj)
+      const obj = observe({ foo: 'bar' })
       const dep = Dep.mock.instances[0]
 
       // negative case - getter not called yet
@@ -120,7 +107,7 @@ describe('observer', () => {
       expect(dep.depend).not.toHaveBeenCalled()
 
       // should return the value of a property
-      expect(observedObj.foo).toBe('bar')
+      expect(obj.foo).toBe('bar')
 
       // should not console.log the value (verbose is false)
       expect(spy).not.toHaveBeenCalled()
@@ -130,13 +117,12 @@ describe('observer', () => {
 
       // should console.log the value if 'verbose' is true
       config.verbose = true
-      observedObj.foo
+      obj.foo
       expect(spy).toHaveBeenCalledWith('getting key "foo": bar')
     })
 
     it('setter', () => {
-      const obj = { foo: 'bar' }
-      const observedObj = observe(obj)
+      const obj = observe({ foo: 'bar' })
       const dep = Dep.mock.instances[0]
 
       // negative case - setter not called yet
@@ -144,8 +130,8 @@ describe('observer', () => {
       expect(dep.notify).not.toHaveBeenCalled()
 
       // should set the value of a property to a new value
-      observedObj.foo = 'baz'
-      expect(observedObj.foo).toBe('baz')
+      obj.foo = 'baz'
+      expect(obj.foo).toBe('baz')
 
       // should not console.log the new value (verbose is false)
       expect(spy).not.toHaveBeenCalled()
@@ -155,7 +141,7 @@ describe('observer', () => {
 
       // should console.log the new value if 'verbose' is true
       config.verbose = true
-      observedObj.foo = 'baz'
+      obj.foo = 'baz'
       expect(spy).toHaveBeenCalledWith('setting key "foo" to: baz')
     })
   })
