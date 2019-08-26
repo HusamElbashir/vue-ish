@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      font-size: 16px;
+    }
+
+    body {
+      /* system font stack */
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+      color: white;
+    }
+
+    a {
+      position: relative;
+      color: white;
+    }
+
+    .alert {
+      background: #ae0000;
+      width: 100%;
+      padding: 0.3em 0;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    #popup {
+      position: absolute;
+      text-align: center;
+      background: rgba(237, 239, 203, 0.85);
+      border: 1px solid #ccc;
+      border-radius: 0.45rem;
+      padding: 0.1rem 0.5rem 0.25rem 0.5rem;
+      font-size: 0.9rem;
+      font-weight: normal;
+      font-style: italic;
+      color: #555;
+      transform: scale(0);
+      opacity: 0;
+      transition: all 0.1s;
+    }
+
+    .message {
+      position: absolute;
+      top: 0.5rem;
+      margin: 0 1rem;
+      font-size: 1rem;
+      text-align: center;
+      /* no need to show if JavaScript is disabled */
+      display: none;
+    }
+
+    .container {
+      background: #23828b;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      z-index: -1;
+    }
+
+    /* background shapes if 'clip-path' is supported */
+    @supports(clip-path: ellipse()) {
+        .container::before {
+        background: #00eded;
+        position: absolute;
+        content: '';
+        display: block;
+        width: 100%;
+        height: 70vh;
+        top: 0;
+        clip-path: ellipse(140% 90% at 0px 100%);
+        z-index: -1;
+      }
+
+      .container::after {
+        background: #5bd5d5;
+        position: absolute;
+        content: '';
+        width: 100%;
+        display: block;
+        height: 60vh;
+        bottom: 0;
+        clip-path: ellipse(120% 100% at 90% 100%);
+        z-index: -1;
+      }
+    }
+
+    .box {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: auto;
+      background: radial-gradient(#00b756, #10866e);
+      width: 200px;
+      height: 200px;
+      border-radius: 10%;
+      border: 0.5rem solid #474c49;
+    }
+
+    .box span {
+      font-size: 6rem;
+      writing-mode: vertical-rl;
+      -ms-writing-mode: tb-rl;
+      transform: translateX(0.8rem);
+      user-select: none;
+      -ms-user-select: none;
+      cursor: default;
+    }
+  </style>
+  <title>Vue-ish | Demo</title>
+</head>
+<body>
+  <noscript>
+    <div class="alert" role="alert">
+      JavaScript is disabled! Bummer :(
+    </div>
+  </noscript>
+
+  <main>
+    <h1 class="message">
+      <strong>Open your browser's <a href="https://support.airtable.com/hc/en-us/articles/232313848-How-to-open-the-developer-console" target="_blank">developer console</a> to interact with the box</strong>
+    </h1>
+
+    <span id="popup" aria-live="polite"></span>
+
+    <div class="container" role="region" aria-label="Box container">
+      <div class="box" role="img" aria-label="Green box containing smiley face" tabindex="0"><span aria-hidden="true">:)</span></div>
+    </div>
+  </main>
+
+  <script src="<%= htmlWebpackPlugin.files.chunks.main.entry %>"></script>
+  <script>
+    // show message only if JavaScript is enabled
+    document.querySelector('.message').style.display = 'block'
+
+    var link = document.querySelector('a')
+    var popup = document.querySelector('#popup')
+    var box = document.querySelector('.box')
+
+    function showPopup() {
+      var linkBoundingRect = document.querySelector('a').getBoundingClientRect()
+      var popupLeftBoundary = Math.max(0, linkBoundingRect.left - linkBoundingRect.width / 2)
+
+      popup.style.left = Math.max(0, linkBoundingRect.left - linkBoundingRect.width / 2) + 'px'
+      popup.style.width = (popupLeftBoundary + linkBoundingRect.width * 2 < window.innerWidth ?
+                          linkBoundingRect.width * 2 :
+                          window.innerWidth - popupLeftBoundary) + 'px'
+      popup.style.top = linkBoundingRect.top + 25 + 'px'
+      popup.style.transform = 'scale(1)'
+      popup.style.opacity = '1'
+      popup.textContent = 'You may need to refresh the page after opening the developer console'
+    }
+
+    function hidePopup() {
+      popup.style.transform = 'scale(0)'
+      popup.style.opacity = '0'
+    }
+
+    // attach event listeners to show and hide popup
+    link.onmouseover = showPopup
+    link.onmouseout = hidePopup
+
+    link.onfocus = showPopup
+    link.onblur = hidePopup
+
+    // box's state object
+    var state = vueish.observe({
+      translate: { x: 0, y: 0 },
+      rotate: 0,
+      scale: 1,
+    })
+
+    vueish.autoRun(function() {
+      box.style.transform =
+        'translate(' +
+        state.translate.x +
+        'px, ' +
+        state.translate.y +
+        'px) ' +
+        'scale(' +
+        state.scale +
+        ') ' +
+        'rotate(' +
+        state.rotate +
+        'deg)'
+    })
+
+    /* INSTRUCTIONS */
+
+    // wrapping things in an IIFE to avoid global vars
+    ;(function() {
+      // detect Edge and IE
+      var UA = window.navigator.userAgent.toLowerCase()
+      var isEdgeOrIE = /msie|trident|edge/.test(UA)
+
+      var basicStyle =
+        'font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; line-height:1.8; font-size: 16px; '
+
+      // helper function for styling console.log output ( IEEEEEEEEEEEEEEEE 😡 )
+      function log() {
+        var str
+        if (isEdgeOrIE) {
+          str = arguments[0].replace(/%c((?:state|spin|gimme|vueish|h1|text).{0,20})%c/g, "'$1'")
+          str = str.replace(/%./g, '')
+          console.log(str)
+        } else {
+          str = arguments[0]
+          var args = Array.prototype.slice.call(arguments, 1)
+          args = args.map(function(arg) {
+            // if arg is a string then it is a CSS style in this basic use case
+            if (typeof arg === 'string') {
+              // check if the style specifies a different font size
+              if (arg.indexOf('font-size') > -1) {
+                var basicStyleAsArray = basicStyle.split('; ')
+                arg = basicStyleAsArray[0] + '; ' + arg
+              } else {
+                arg = basicStyle + arg
+              }
+            }
+            return arg
+          })
+          console.log.apply(null, [str].concat(args))
+        }
+      }
+
+      function repeat(x, n) {
+        return Array.apply(null, { length: n }).map(function() { return x })
+      }
+
+      var highlightStyle = 'background: #ffe5ee; padding: 2px; margin: 1px;'
+
+      var str =
+        "%cHey there!\n" +
+        "%cTo interact with the box a reactive %cstate%c object ..\n" +
+        "%c{ translate: {x: 0, y: 0}, rotate: 0, scale: 1 }%c\n" +
+        "is exposed for you. You can modify any value in the %cstate%c object " +
+        "and watch the box react immediately.\n" +
+        "Things you can try ..\n" +
+        "- %cstate.translate.x = 100%c to move the box 100px to the right.\n" +
+        "- %cstate.scale = 2%c to double the box's size.\n" +
+        "- %cfunction spin() {%c\n" +
+        "   %c   requestAnimationFrame(function() {%c\n" +
+        "   %c       state.rotate += 1%c\n" +
+        "   %c       spin()%c\n" +
+        "   %c   })%c\n" +
+        "   %c}%c\n" +
+        "then %cspin()%c to make the box spin clockwise.\n" +
+        "Have fun 🎉\n" +
+        "P.S. If you want to dig deeper call %cgimmeMoar()%c."
+
+      var styles = Array.prototype.concat.apply(
+        ['color: #ae0000; font-size: 32px;'],
+        repeat(['', highlightStyle], 13).concat('')
+      )
+
+      log.apply(null, [str].concat(styles))
+
+      window.gimmeMoar = function() {
+        // hide message and clear console before logging new instructions
+        document.querySelector('.message').style.display = 'none'
+        console.clear()
+
+        var str =
+          "%cYou can use %cvueish.observe(obj)%c on an object to make it reactive. " +
+          "You can also use %cvueish.autoRun(cb)%c to have a callback function re-invoked " +
+          "automatically whenever a reactive property it depends on changes it's value.\n" +
+          "This is better illustrated with an example ..\n" +
+          "- Create a new %ch1%c element ..\n" +
+          "  %cconst h1 = document.createElement('h1')%c\n" +
+          "- Append the element to the DOM ..\n" +
+          "  %cdocument.body.appendChild(h1)%c\n" +
+          "- Create a reactive state object ..\n" +
+          "  %cconst myStateObj = vueish.observe({ text: '' })%c\n" +
+          "- Bind the %ch1%c element's text content to the state object's %ctext%c property ..\n" +
+          "  %cvueish.autoRun(() => {%c\n" +
+          "  %c    h1.textContent = myStateObj.text%c\n" +
+          "  %c})%c\n" +
+          "- Modify the state object's %ctext%c property and watch the %ch1%c element react! ..\n" +
+          "  %cmyStateObj.text = 'Hello World'%c\n" +
+          "I'll leave the rest to your imagination. Now go and have fun 😉"
+
+        var styles = Array.prototype.concat.apply([], repeat(['', highlightStyle], 14).concat(''))
+
+        log.apply(null, [str].concat(styles))
+      }
+    })()
+  </script>
+</body>
+</html>

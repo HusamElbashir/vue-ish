@@ -34,6 +34,7 @@ module.exports = ({ prod }) => ({
     new CleanWebpackPlugin(),
     new HTMLWebpackPlugin({
       template: 'src/index.html',
+      inject: false,
     }),
   ],
 })
