@@ -11,9 +11,6 @@
     "test": "jest",
     "test:cover": "yarn test --coverage"
   },
-  "installConfig": {
-    "pnp": true
-  },
   "husky": {
     "hooks": {
       "pre-commit": "yarn lint && yarn test"
