@@ -1,13 +1,19 @@
 const path = require('path')
+const MiniCSSExtractPlugin = require('mini-css-extract-plugin')
 const PnpWebpackPlugin = require('pnp-webpack-plugin')
+const TerserPlugin = require('terser-webpack-plugin')
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const HTMLWebpackPlugin = require('html-webpack-plugin')
 
-module.exports = ({ prod }) => ({
-  mode: prod ? 'production' : 'development',
-  entry: './src/js/index.js',
+module.exports = env => ({
+  mode: env && env.production ? 'production' : 'development',
+  entry: {
+    'vue-ish': '@/index',
+    main: '@/demo/js/main',
+  },
   output: {
-    filename: 'vue-ish.js',
+    filename: '[name].js',
     path: path.resolve(__dirname, 'dist'),
   },
   module: {
@@ -21,19 +27,40 @@ module.exports = ({ prod }) => ({
           },
         },
       },
+      {
+        test: /\.css$/,
+        use: [
+          {
+            loader: MiniCSSExtractPlugin.loader,
+            options: {
+              hmr: !(env && env.production),
+            },
+          },
+          'css-loader',
+        ],
+      },
     ],
   },
   resolve: {
+    alias: {
+      '@': path.resolve(__dirname, 'src'),
+    },
     plugins: [PnpWebpackPlugin],
   },
   resolveLoader: {
     plugins: [PnpWebpackPlugin.moduleLoader(module)],
   },
-  devtool: prod ? 'source-map' : 'eval-source-map',
+  devtool: env && env.production ? undefined : 'eval-source-map',
+  optimization: {
+    minimizer: [new TerserPlugin(), new OptimizeCSSAssetsPlugin()],
+  },
   plugins: [
     new CleanWebpackPlugin(),
+    new MiniCSSExtractPlugin({
+      filename: 'style.css',
+    }),
     new HTMLWebpackPlugin({
-      template: 'src/index.html',
+      template: 'src/demo/index.html',
       inject: false,
     }),
   ],

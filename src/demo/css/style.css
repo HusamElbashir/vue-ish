@@ -1,0 +1,116 @@
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+}
+
+body {
+  /* system font stack */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  color: white;
+}
+
+a {
+  position: relative;
+  color: white;
+}
+
+.alert {
+  background: #ae0000;
+  width: 100%;
+  padding: 0.3em 0;
+  font-weight: bold;
+  text-align: center;
+}
+
+#popup {
+  position: absolute;
+  text-align: center;
+  background: rgba(237, 239, 203, 0.85);
+  border: 1px solid #ccc;
+  border-radius: 0.45rem;
+  padding: 0.1rem 0.5rem 0.25rem 0.5rem;
+  font-size: 0.9rem;
+  font-weight: normal;
+  font-style: italic;
+  color: #555;
+  transform: scale(0);
+  opacity: 0;
+  transition: all 0.1s;
+}
+
+.message {
+  position: absolute;
+  top: 0.5rem;
+  margin: 0 1rem;
+  font-size: 1rem;
+  text-align: center;
+  /* no need to show if JavaScript is disabled */
+  display: none;
+}
+
+.container {
+  background: #23828b;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  z-index: -1;
+}
+
+/* background shapes if 'clip-path' is supported */
+@supports(clip-path: ellipse()) {
+    .container::before {
+    background: #00eded;
+    position: absolute;
+    content: '';
+    display: block;
+    width: 100%;
+    height: 70vh;
+    top: 0;
+    clip-path: ellipse(140% 90% at 0px 100%);
+    z-index: -1;
+  }
+
+  .container::after {
+    background: #5bd5d5;
+    position: absolute;
+    content: '';
+    width: 100%;
+    display: block;
+    height: 60vh;
+    bottom: 0;
+    clip-path: ellipse(120% 100% at 90% 100%);
+    z-index: -1;
+  }
+}
+
+.box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  background: radial-gradient(#00b756, #10866e);
+  width: 200px;
+  height: 200px;
+  border-radius: 10%;
+  border: 0.5rem solid #474c49;
+}
+
+.box span {
+  font-size: 6rem;
+  writing-mode: vertical-rl;
+  -ms-writing-mode: tb-rl;
+  transform: translateX(0.8rem);
+  user-select: none;
+  -ms-user-select: none;
+  cursor: default;
+}

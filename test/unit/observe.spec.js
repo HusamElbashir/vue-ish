@@ -1,6 +1,6 @@
-import config from '@/js/config'
-import observe from '@/js/observe'
-import Dep from '@/js/dep'
+import config from '@/config'
+import observe from '@/observe'
+import Dep from '@/dep'
 
 // custom matcher to check if an object is observed
 expect.extend({
@@ -34,7 +34,7 @@ expect.extend({
 // cache config settings to be restored at the end of the test
 const _config = JSON.parse(JSON.stringify(config))
 
-jest.mock('@/js/dep')
+jest.mock('@/dep')
 
 describe('observer', () => {
   beforeEach(() => {

@@ -1,4 +1,4 @@
-import Dep from '@/js/dep'
+import Dep from '@/dep'
 
 describe('Dep', () => {
   const dep = new Dep()

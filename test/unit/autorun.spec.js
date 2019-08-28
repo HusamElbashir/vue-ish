@@ -1,5 +1,5 @@
-import autoRun from '@/js/autorun'
-import Dep from '@/js/dep'
+import autoRun from '@/autorun'
+import Dep from '@/dep'
 
 describe('autoRun', () => {
   const queue = []
