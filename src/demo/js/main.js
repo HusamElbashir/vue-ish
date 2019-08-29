@@ -3,15 +3,15 @@ import '../css/style.css'
 // show message only if JavaScript is enabled
 document.querySelector('.message').style.display = 'block'
 
-var link = document.querySelector('a')
-var popup = document.querySelector('#popup')
-var box = document.querySelector('.box')
+const link = document.querySelector('a')
+const popup = document.querySelector('#popup')
+const box = document.querySelector('.box')
 
 function showPopup() {
-  var linkBoundingRect = document.querySelector('a').getBoundingClientRect()
-  var popupLeftBoundary = Math.max(0, linkBoundingRect.left - linkBoundingRect.width / 2)
+  const linkBoundingRect = document.querySelector('a').getBoundingClientRect()
+  const popupLeftBoundary = Math.max(0, linkBoundingRect.left - linkBoundingRect.width / 2)
 
-  popup.style.left = Math.max(0, linkBoundingRect.left - linkBoundingRect.width / 2) + 'px'
+  popup.style.left = popupLeftBoundary + 'px'
   popup.style.width =
     (popupLeftBoundary + linkBoundingRect.width * 2 < window.innerWidth
       ? linkBoundingRect.width * 2
@@ -35,13 +35,13 @@ link.onfocus = showPopup
 link.onblur = hidePopup
 
 // box's state object
-var state = vueish.observe({
+const state = vueish.observe({
   translate: { x: 0, y: 0 },
   rotate: 0,
   scale: 1,
 })
 
-vueish.autoRun(function() {
+vueish.autoRun(() => {
   box.style.transform =
     'translate(' +
     state.translate.x +
@@ -61,28 +61,28 @@ vueish.autoRun(function() {
 // wrapping things in an IIFE to avoid global vars
 ;(function() {
   // detect Edge and IE
-  var UA = window.navigator.userAgent.toLowerCase()
-  var isEdgeOrIE = /msie|trident|edge/.test(UA)
+  const UA = window.navigator.userAgent.toLowerCase()
+  const isEdgeOrIE = /msie|trident|edge/.test(UA)
 
-  var basicStyle =
+  const basicStyle =
     'font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; line-height:1.8; font-size: 16px; '
 
   // helper function for styling console.log output ( IEEEEEEEEEEEEEEEE 😡 )
   function log() {
-    var str
+    let str
     if (isEdgeOrIE) {
       str = arguments[0].replace(/%c((?:state|spin|gimme|vueish|h1|text).{0,20})%c/g, "'$1'")
       str = str.replace(/%./g, '')
       console.log(str)
     } else {
       str = arguments[0]
-      var args = Array.prototype.slice.call(arguments, 1)
-      args = args.map(function(arg) {
+      let args = Array.prototype.slice.call(arguments, 1)
+      args = args.map(arg => {
         // if arg is a string then it is a CSS style in this basic use case
         if (typeof arg === 'string') {
           // check if the style specifies a different font size
           if (arg.indexOf('font-size') > -1) {
-            var basicStyleAsArray = basicStyle.split('; ')
+            const basicStyleAsArray = basicStyle.split('; ')
             arg = basicStyleAsArray[0] + '; ' + arg
           } else {
             arg = basicStyle + arg
@@ -95,14 +95,14 @@ vueish.autoRun(function() {
   }
 
   function repeat(x, n) {
-    return Array.apply(null, { length: n }).map(function() {
+    return Array.apply(null, { length: n }).map(() => {
       return x
     })
   }
 
-  var highlightStyle = 'background: #ffe5ee; padding: 2px; margin: 1px;'
+  const highlightStyle = 'background: #ffe5ee; padding: 2px; margin: 1px;'
 
-  var str =
+  const str =
     '%cHey there!\n' +
     '%cTo interact with the box a reactive %cstate%c object ..\n' +
     '%c{ translate: {x: 0, y: 0}, rotate: 0, scale: 1 }%c\n' +
@@ -121,19 +121,19 @@ vueish.autoRun(function() {
     'Have fun 🎉\n' +
     'P.S. If you want to dig deeper call %cgimmeMoar()%c.'
 
-  var styles = Array.prototype.concat.apply(
+  const styles = Array.prototype.concat.apply(
     ['color: #ae0000; font-size: 32px;'],
     repeat(['', highlightStyle], 13).concat('')
   )
 
   log.apply(null, [str].concat(styles))
 
-  window.gimmeMoar = function() {
+  window.gimmeMoar = () => {
     // hide message and clear console before logging new instructions
     document.querySelector('.message').style.display = 'none'
     console.clear()
 
-    var str =
+    const str =
       '%cYou can use %cvueish.observe(obj)%c on an object to make it reactive. ' +
       'You can also use %cvueish.autoRun(cb)%c to have a callback function re-invoked ' +
       "automatically whenever a reactive property it depends on changes it's value.\n" +
@@ -152,7 +152,7 @@ vueish.autoRun(function() {
       "  %cmyStateObj.text = 'Hello World'%c\n" +
       "I'll leave the rest to your imagination. Now go and have fun 😉"
 
-    var styles = Array.prototype.concat.apply([], repeat(['', highlightStyle], 14).concat(''))
+    const styles = Array.prototype.concat.apply([], repeat(['', highlightStyle], 14).concat(''))
 
     log.apply(null, [str].concat(styles))
   }
