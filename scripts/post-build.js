@@ -21,3 +21,8 @@ fs.mkdirSync(`${demoFolder}/css`)
 moveFile('index.html', distFolder, demoFolder)
 moveFile('main.js', distFolder, `${demoFolder}/js`)
 moveFile('style.css', distFolder, `${demoFolder}/css`)
+
+// copy vue-ish.js to demo/js
+fs.copyFile(`${distFolder}/vue-ish.js`, `${demoFolder}/js/vue-ish.js`, err => {
+  if (err) throw err
+})
