@@ -1,0 +1,115 @@
+name: Build Test And Deploy
+on:
+  push:
+    branches:
+      - dev
+    paths:
+      - '*'
+      - '!*.md'
+      - '!/dist/*'
+
+jobs:
+  chore:
+    name: Main Job
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Setting up the environment
+        run: |
+          git config user.name "Husam's Bot"
+
+          git config user.email "husamsbot@gmail.com"
+
+          yarn remove husky
+
+          yarn
+
+      - name: Building the vue-ish bundle and demo files
+        run: yarn build
+
+      - name: Running tests
+        run: yarn test
+
+      - name: Creating PRs to deploy to GitHub Pages and update dist folder (if needed)
+        env:
+          BOT_TOKEN: ${{ secrets.BotToken }}
+        run: |
+          # stash away newly generated yarn.lock
+          git stash
+
+          ######################################
+          #     UPDATE GH-PAGES DEMO FILES     #
+          ######################################
+
+          TIMESTAMP=`date +%s`
+          BRANCH_NAME=`echo update-ghpages-$TIMESTAMP`
+
+          git checkout gh-pages
+
+          git branch $BRANCH_NAME && git checkout $BRANCH_NAME
+
+          cp -rf dist/demo/. .
+
+          git add index.html css js
+
+          # 'git commit' will exit with a non-zero code if there's nothing to commit
+          set +e
+          git commit -m "chore: update demo files 🤖"
+          COMMIT_EXIT_CODE=`echo $?` # $? is the exit code of the last command
+          set -e
+
+          if [ $COMMIT_EXIT_CODE -eq 0 ]; then
+            git push --set-upstream "https://husams-bot:${BOT_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" $BRANCH_NAME
+
+            # create a pull request
+            curl -X POST \
+              -u husams-bot:${BOT_TOKEN} \
+              -H "Accept: application/vnd.github.v3+json" \
+              -d "{ \
+                    \"title\": \"chore: update demo files\", \
+                    \"head\": \"${BRANCH_NAME}\", \
+                    \"base\": \"gh-pages\", \
+                    \"body\": \"This is an automated PR. Beep beep!\" \
+                  }" \
+              "https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls"
+          fi
+
+          ######################################
+          #         UPDATE DIST FOLDER         #
+          ######################################
+
+          cp -r dist tmp
+
+          git checkout dev
+
+          rm -rf dist && mv tmp dist
+
+          BRANCH_NAME=`echo update-dist-$TIMESTAMP`
+
+          git branch $BRANCH_NAME && git checkout $BRANCH_NAME
+
+          git add dist
+
+          # 'git commit' will exit with a non-zero code if there's nothing to commit
+          set +e
+          git commit -m "chore: update dist folder 🤖"
+          COMMIT_EXIT_CODE=`echo $?` # $? is the exit code of the last command
+          set -e
+
+          if [ $COMMIT_EXIT_CODE -eq 0 ]; then
+            git push --set-upstream "https://husams-bot:${BOT_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" $BRANCH_NAME
+
+            # create a pull request
+            curl -X POST \
+              -u husams-bot:${BOT_TOKEN} \
+              -H "Accept: application/vnd.github.v3+json" \
+              -d "{ \
+                    \"title\": \"chore: update dist folder\", \
+                    \"head\": \"${BRANCH_NAME}\", \
+                    \"base\": \"dev\", \
+                    \"body\": \"This is an automated PR. Beep beep!\" \
+                  }" \
+              "https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls"
+          fi
