@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/style.css"/>
+  <title>Vue-ish | Demo</title>
+</head>
+<body>
+  <noscript>
+    <div class="alert" role="alert">
+      JavaScript is disabled! Bummer :(
+    </div>
+  </noscript>
+
+  <main>
+    <h1 class="message">
+      <strong>Open your browser's <a href="https://support.airtable.com/hc/en-us/articles/232313848-How-to-open-the-developer-console" target="_blank">developer console</a> to interact with the box</strong>
+    </h1>
+
+    <span id="popup" aria-live="polite"></span>
+
+    <div class="container" role="region" aria-label="Box container">
+      <div class="box" role="img" aria-label="Green box containing smiley face" tabindex="0"><span aria-hidden="true">:)</span></div>
+    </div>
+  </main>
+
+  <script src="js/vue-ish.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
