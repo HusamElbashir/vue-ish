@@ -71,7 +71,7 @@ vueish.autoRun(() => {
   function log() {
     let str
     if (isEdgeOrIE) {
-      str = arguments[0].replace(/%c((?:state|spin|gimme|vueish|h1|text).{0,20})%c/g, "'$1'")
+      str = arguments[0].replace(/%c((?:state|spin|gimme|vueish|h1|text).*?)%c/g, "'$1'")
       str = str.replace(/%./g, '')
       console.log(str)
     } else {
