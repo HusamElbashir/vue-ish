@@ -30,7 +30,13 @@ jobs:
         run: yarn build
 
       - name: Running tests
-        run: yarn test
+        env:
+          CODECOV_TOKEN: ${{ secrets.CodecovToken }}
+        run: |
+          yarn test:cover
+
+          # upload coverage results to codecov
+          bash <(curl -s https://codecov.io/bash)
 
       - name: Creating PRs to deploy to GitHub Pages and update dist folder (if needed)
         env:
