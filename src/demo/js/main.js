@@ -145,7 +145,7 @@ vueish.autoRun(() => {
       '- Create a reactive state object ..\n' +
       "  %cconst myStateObj = vueish.observe({ text: '' })%c\n" +
       "- Bind the %ch1%c element's text content to the state object's %ctext%c property ..\n" +
-      '  %cvueish.autoRun(() => {%c\n' +
+      '  %c\rvueish.autoRun(() => {%c\n' +
       '  %c    h1.textContent = myStateObj.text%c\n' +
       '  %c})%c\n' +
       "- Modify the state object's %ctext%c property and watch the %ch1%c element react! ..\n" +
