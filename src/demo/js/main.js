@@ -35,7 +35,7 @@ link.onfocus = showPopup
 link.onblur = hidePopup
 
 // box's state object
-const state = vueish.observe({
+window.state = vueish.observe({
   translate: { x: 0, y: 0 },
   rotate: 0,
   scale: 1,
