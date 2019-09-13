@@ -14,6 +14,6 @@ export default function autoRun(cb) {
 
   wrappedCb()
 
-  // necessary for testing
-  return wrappedCb
+  /* istanbul ignore else */
+  if (process.env.NODE_ENV === 'test') return wrappedCb // necessary for testing
 }
