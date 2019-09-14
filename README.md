@@ -1,4 +1,4 @@
-# vue-ish
+# Vue-ish
 
 [![Build Status](https://github.com/HusamIbrahim/vue-ish/workflows/Build%20Test%20And%20Deploy/badge.svg)](https://github.com/HusamIbrahim/vue-ish) [![Coverage Status](https://img.shields.io/codecov/c/github/HusamIbrahim/vue-ish)](https://codecov.io/github/HusamIbrahim/vue-ish) [![License](https://img.shields.io/github/license/HusamIbrahim/vue-ish)](https://github.com/HusamIbrahim/vue-ish/blob/dev/LICENSE)
 
@@ -6,7 +6,7 @@
 
 ## 👋 Introduction
 
-**vue-ish** is a minimalistic library that demonstrates the most basic reactivity features in modern front-end JavaScript frameworks such as Vue.js.
+**Vue-ish** is a minimalistic library that demonstrates the most basic reactivity features in modern front-end JavaScript frameworks such as Vue.js.
 
 [Live Demo](https://husamibrahim.github.io/vue-ish)
 
@@ -17,7 +17,7 @@ After having used Vue.js for a while I became interested in digging deeper to un
 
 ## 🚀 Usage
 
-Simply include **vue-ish** as a script in your `index.html` file. You can [grab it from here](https://github.com/HusamIbrahim/vue-ish/tree/dev/dist) or use it from a CDN.
+Simply include **Vue-ish** as a script in your `index.html` file. You can [grab it from here](https://github.com/HusamIbrahim/vue-ish/tree/dev/dist) or use it from a CDN.
 
 ```
 <script src="https://cdn.jsdelivr.net/gh/HusamIbrahim/vue-ish@dev/dist/vue-ish.js"></script>
@@ -108,10 +108,10 @@ $ yarn run test:cover
 
 Reactivity in Vue 2.x depends on the use of [Object.defineProperty](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty) to make reactive objects (think `data` option, for example) by walking over their properties and converting them into getter/setters[[🡕]](https://vuejs.org/v2/guide/reactivity.html#How-Changes-Are-Tracked). This allows Vue to intercept object property access/assignment to collect dependencies and notify subscribers(watchers), respectively. It is also why Vue cannot detect object property addition/deletion or direct array member assignment, and why it needs special API methods such as `Vue.set` to deal with these use cases[[🡕]](https://vuejs.org/v2/guide/reactivity.html#Change-Detection-Caveats). Note that this will change in Vue 3.x, which will employ an ES6 [Proxy](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy) based observation mechanism[[🡕]](https://medium.com/the-vue-point/plans-for-the-next-iteration-of-vue-js-777ffea6fabf).
 
-The same strategy is used in **vue-ish**, with two major differences:
+The same strategy is used in **Vue-ish**, with two major differences:
 
-1. In Vue there's a bookkeeping system wherein watchers keep track of their dependencies and dependencies keep track of their subscribers. This allows Vue to deal with stale dependencies, and is ommitted from **vue-ish** for simplicity.
-2. Vue [performs DOM updates asynchronously](https://vuejs.org/v2/guide/reactivity.html#Async-Update-Queue) for performance reasons. It uses a [scheduler](https://github.com/vuejs/vue/blob/dev/src/core/observer/scheduler.js), which batchs work that needs to be done in the same event loop and flushes the batch queue in the next event loop *tick*. On the other hand, **vue-ish** performs updates synchronously for simplicty.
+1. In Vue there's a bookkeeping system wherein watchers keep track of their dependencies and dependencies keep track of their subscribers. This allows Vue to deal with stale dependencies, and is ommitted from **Vue-ish** for simplicity.
+2. Vue [performs DOM updates asynchronously](https://vuejs.org/v2/guide/reactivity.html#Async-Update-Queue) for performance reasons. It uses a [scheduler](https://github.com/vuejs/vue/blob/dev/src/core/observer/scheduler.js), which batchs work that needs to be done in the same event loop and flushes the batch queue in the next event loop *tick*. On the other hand, **Vue-ish** performs updates synchronously for simplicty.
 
 ## 👩‍🏫 Lessons Learned
 
