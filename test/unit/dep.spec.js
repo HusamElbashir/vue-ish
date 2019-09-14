@@ -10,19 +10,19 @@ describe('Dep', () => {
     expect(subs.size).toBe(0)
   })
 
-  it('does not collect activeComputation as a dependent if not set', () => {
+  it('does not collect activeComputation as a subscriber if not set', () => {
     dep.depend()
     expect(subs.size).toBe(0)
   })
 
-  it('collects activeComputation as a dependent if set', () => {
+  it('collects activeComputation as a subscriber if set', () => {
     Dep.activeComputation = spy
     dep.depend()
     expect(subs.size).toBe(1)
     expect(subs.has(spy)).toBe(true)
   })
 
-  it('invokes/notifies dependent computations', () => {
+  it('invokes/notifies subscribed functions', () => {
     dep.notify()
     expect(spy).toHaveBeenCalled()
   })
