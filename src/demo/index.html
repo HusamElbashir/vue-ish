@@ -3,8 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="<%= process.env.NODE_ENV === 'production' ?
-                              'css/style.css' : 'style.css' %>"/>
+  <link rel="stylesheet" href="css/style.css"/>
   <title>Vue-ish | Demo</title>
 </head>
 <body>
@@ -26,7 +25,7 @@
     </div>
   </main>
 
-  <script src="<%= process.env.NODE_ENV === 'production' ? 'js/vue-ish.js' : 'vue-ish.js' %>"></script>
-  <script src="<%= process.env.NODE_ENV === 'production' ? 'js/main.js' : 'main.js' %>"></script>
+  <script src="js/vue-ish.js"></script>
+  <script src="js/main.js"></script>
 </body>
 </html>

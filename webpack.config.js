@@ -13,8 +13,8 @@ module.exports = env => ({
     main: '@/demo/js/main',
   },
   output: {
-    filename: '[name].js',
-    path: path.resolve(__dirname, 'dist'),
+    filename: 'js/[name].js',
+    path: path.resolve(__dirname, 'dist/demo'),
   },
   module: {
     rules: [
@@ -57,7 +57,7 @@ module.exports = env => ({
   plugins: [
     new CleanWebpackPlugin(),
     new MiniCSSExtractPlugin({
-      filename: 'style.css',
+      filename: 'css/style.css',
     }),
     new HTMLWebpackPlugin({
       template: 'src/demo/index.html',
