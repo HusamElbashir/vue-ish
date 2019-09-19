@@ -39,6 +39,16 @@ module.exports = env => ({
           'css-loader',
         ],
       },
+      {
+        test: /\.woff$/,
+        use: {
+          loader: 'file-loader',
+          options: {
+            name: 'fonts/[name].[ext]',
+            publicPath: '../',
+          },
+        },
+      },
     ],
   },
   resolve: {
