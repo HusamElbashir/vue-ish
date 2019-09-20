@@ -94,7 +94,7 @@ jobs:
 
           cp -rf tmp/demo/. .
 
-          git add index.html css js
+          git add index.html css fonts js
 
           # 'git commit' will exit with a non-zero code if there's nothing to commit
           set +e
