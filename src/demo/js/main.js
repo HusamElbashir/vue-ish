@@ -42,18 +42,8 @@ window.state = vueish.observe({
 })
 
 vueish.autoRun(() => {
-  box.style.transform =
-    'translate(' +
-    state.translate.x +
-    'px, ' +
-    state.translate.y +
-    'px) ' +
-    'scale(' +
-    state.scale +
-    ') ' +
-    'rotate(' +
-    state.rotate +
-    'deg)'
+  box.style.transform = `translate(${state.translate.x}px, ${state.translate.y}px) \
+                        scale(${state.scale}) rotate(${state.rotate}deg)`
 })
 
 /* INSTRUCTIONS */
@@ -102,24 +92,25 @@ vueish.autoRun(() => {
 
   const highlightStyle = 'background: #ffe5ee; padding: 2px; margin: 1px;'
 
-  const str =
-    '%cHey there!\n' +
-    '%cTo interact with the box a reactive %cstate%c object ..\n' +
-    '%c{ translate: {x: 0, y: 0}, rotate: 0, scale: 1 }%c\n' +
-    'is exposed for you. You can modify any value in the %cstate%c object ' +
-    'and watch the box react immediately.\n' +
-    'Things you can try ..\n' +
-    '- %cstate.translate.x = 100%c to move the box 100px to the right.\n' +
-    "- %cstate.scale = 2%c to double the box's size.\n" +
-    '- %cfunction spin() {%c\n' +
-    '   %c   requestAnimationFrame(function() {%c\n' +
-    '   %c       state.rotate += 1%c\n' +
-    '   %c       spin()%c\n' +
-    '   %c   })%c\n' +
-    '   %c}%c\n' +
-    'then %cspin()%c to make the box spin clockwise.\n' +
-    'Have fun 🎉\n' +
-    'P.S. If you want to dig deeper call %cgimmeMoar()%c.'
+  const str = `
+    %cHey there!%c
+    To interact with the box a reactive %cstate%c object ..
+    %c{ translate: {x: 0, y: 0}, rotate: 0, scale: 1 }%c
+    is exposed for you. You can modify any value in the %cstate%c object
+    and watch the box react immediately.
+    Things you can try ..
+    - %cstate.translate.x = 100%c to move the box 100px to the right.
+    - %cstate.scale = 2%c to double the box's size.
+    - %cfunction spin() {%c
+       %c   requestAnimationFrame(function() {%c
+       %c       state.rotate += 1%c
+       %c       spin()%c
+       %c   })%c
+       %c}%c
+    then %cspin()%c to make the box spin clockwise.
+    Have fun 🎉
+    P.S. If you want to dig deeper call %cgimmeMoar()%c.
+  `
 
   const styles = Array.prototype.concat.apply(
     ['color: #ae0000; font-size: 32px;'],
@@ -133,24 +124,25 @@ vueish.autoRun(() => {
     document.querySelector('.message').style.display = 'none'
     console.clear()
 
-    const str =
-      '%cYou can use %cvueish.observe(obj)%c on an object to make it reactive. ' +
-      'You can also use %cvueish.autoRun(cb)%c to have a callback function re-invoked ' +
-      "automatically whenever a reactive property it depends on changes it's value.\n" +
-      'This is better illustrated with an example ..\n' +
-      '- Create a new %ch1%c element ..\n' +
-      "  %cconst h1 = document.createElement('h1')%c\n" +
-      '- Append the element to the DOM ..\n' +
-      '  %cdocument.body.appendChild(h1)%c\n' +
-      '- Create a reactive state object ..\n' +
-      "  %cconst myStateObj = vueish.observe({ text: '' })%c\n" +
-      "- Bind the %ch1%c element's text content to the state object's %ctext%c property ..\n" +
-      '  %c\rvueish.autoRun(() => {%c\n' +
-      '  %c    h1.textContent = myStateObj.text%c\n' +
-      '  %c})%c\n' +
-      "- Modify the state object's %ctext%c property and watch the %ch1%c element react! ..\n" +
-      "  %cmyStateObj.text = 'Hello World'%c\n" +
-      "I'll leave the rest to your imagination. Now go and have fun 😉"
+    const str = `%c
+      You can use %cvueish.observe(obj)%c on an object to make it reactive.
+      You can also use %cvueish.autoRun(cb)%c to have a callback function re-invoked
+      automatically whenever a reactive property it depends on changes it's value.
+      This is better illustrated with an example ..
+      - Create a new %ch1%c element ..
+        %cconst h1 = document.createElement('h1')%c
+      - Append the element to the DOM ..
+        %cdocument.body.appendChild(h1)%c
+      - Create a reactive state object ..
+        %cconst myStateObj = vueish.observe({ text: '' })%c
+      - Bind the %ch1%c element's text content to the state object's %ctext%c property ..
+        %c\rvueish.autoRun(() => {%c
+        %c    h1.textContent = myStateObj.text%c
+        %c})%c
+      - Modify the state object's %ctext%c property and watch the %ch1%c element react! ..
+        %cmyStateObj.text = 'Hello World'%c
+      I'll leave the rest to your imagination. Now go and have fun 😉
+    `
 
     const styles = Array.prototype.concat.apply([], repeat(['', highlightStyle], 14).concat(''))
 
