@@ -1,39 +1,5 @@
 import '../css/style.css'
 
-// show message only if JavaScript is enabled
-document.querySelector('.message').style.display = 'block'
-
-const link = document.querySelector('a')
-const popup = document.querySelector('#popup')
-const box = document.querySelector('.box')
-
-function showPopup() {
-  const linkBoundingRect = document.querySelector('a').getBoundingClientRect()
-  const popupLeftBoundary = Math.max(0, linkBoundingRect.left - linkBoundingRect.width / 2)
-
-  popup.style.left = popupLeftBoundary + 'px'
-  popup.style.width =
-    (popupLeftBoundary + linkBoundingRect.width * 2 < window.innerWidth
-      ? linkBoundingRect.width * 2
-      : window.innerWidth - popupLeftBoundary) + 'px'
-  popup.style.top = linkBoundingRect.top + 25 + 'px'
-  popup.style.transform = 'scale(1)'
-  popup.style.opacity = '1'
-  popup.textContent = 'You may need to refresh the page after opening the developer console'
-}
-
-function hidePopup() {
-  popup.style.transform = 'scale(0)'
-  popup.style.opacity = '0'
-}
-
-// attach event listeners to show and hide popup
-link.onmouseover = showPopup
-link.onmouseout = hidePopup
-
-link.onfocus = showPopup
-link.onblur = hidePopup
-
 // box's state object
 window.state = vueish.observe({
   translate: { x: 0, y: 0 },
