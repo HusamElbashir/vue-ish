@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preload" href="fonts/Inter-Regular.woff" as="font" type="font/woff" crossorigin>
+  <link rel="preload" href="fonts/Inter-Italic.woff" as="font" type="font/woff" crossorigin>
   <link rel="stylesheet" href="css/style.css"/>
   <title>Vue-ish | Demo</title>
 </head>
@@ -25,6 +27,41 @@
     </div>
   </main>
 
+  <script>
+    // show message only if JavaScript is enabled
+    document.querySelector('.message').style.display = 'block'
+
+    var link = document.querySelector('a')
+    var popup = document.querySelector('#popup')
+    var box = document.querySelector('.box')
+
+    function showPopup() {
+      const linkBoundingRect = document.querySelector('a').getBoundingClientRect()
+      const popupLeftBoundary = Math.max(0, linkBoundingRect.left - linkBoundingRect.width / 2)
+
+      popup.style.left = popupLeftBoundary + 'px'
+      popup.style.width =
+        (popupLeftBoundary + linkBoundingRect.width * 2 < window.innerWidth
+          ? linkBoundingRect.width * 2
+          : window.innerWidth - popupLeftBoundary) + 'px'
+      popup.style.top = linkBoundingRect.top + 25 + 'px'
+      popup.style.transform = 'scale(1)'
+      popup.style.opacity = '1'
+      popup.textContent = 'You may need to refresh the page after opening the developer console'
+    }
+
+    function hidePopup() {
+      popup.style.transform = 'scale(0)'
+      popup.style.opacity = '0'
+    }
+
+    // attach event listeners to show and hide popup
+    link.onmouseover = showPopup
+    link.onmouseout = hidePopup
+
+    link.onfocus = showPopup
+    link.onblur = hidePopup
+  </script>
   <script src="js/vue-ish.js"></script>
   <script src="js/main.js"></script>
 </body>
