@@ -19,7 +19,7 @@ After having used Vue.js for a while I became interested in digging deeper to un
 
 Simply include **Vue-ish** as a script in your `index.html` file. You can [grab it from here](https://github.com/HusamIbrahim/vue-ish/tree/dev/dist) or use it from a CDN.
 
-```
+```html
 <script src="https://cdn.jsdelivr.net/gh/HusamIbrahim/vue-ish@dev/dist/vue-ish.js"></script>
 ```
 
@@ -31,7 +31,7 @@ Simply include **Vue-ish** as a script in your `index.html` file. You can [grab 
 - *Returns*: A reactive object
 - *Usage*:
 
-```
+```javascript
 const obj = { foo: 'bar' }
 vueish.observe(obj) // makes obj reactive and returns it
 ```
@@ -41,7 +41,7 @@ vueish.observe(obj) // makes obj reactive and returns it
 - *Arguments*: `{Function} callback`
 - *Usage*:
 
-```
+```javascript
 vueish.autoRun(() => {
   // This is the reactive zone! Using any reactive object
   // property here will cause the callback function to be
@@ -55,7 +55,7 @@ vueish.autoRun(() => {
 - *Default*: `false`
 - *Usage*:
 
-```
+```javascript
 // Turns verbose mode on. A message is logged in the console
 // when any reactive object property is accessed or set.
 vueish.config.verbose = true
@@ -63,7 +63,7 @@ vueish.config.verbose = true
 
 ### Hello world example
 
-```
+```javascript
 // Create a new "h1" element
 const h1 = document.createElement('h1')
 
@@ -84,13 +84,13 @@ state.text = 'Hello World'
 
 After cloning the repo run:
 
-``` bash
+```bash
 $ yarn # install project dependencies
 ```
 
 ### Useful npm scripts
 
-``` bash
+```bash
 # start a development server with hot reloading enabled
 $ yarn run start
 
