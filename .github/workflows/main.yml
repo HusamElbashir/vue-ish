@@ -3,10 +3,9 @@ on:
   push:
     branches:
       - dev
-    paths:
-      - '*'
-      - '!*.md'
-      - '!/dist/*'
+    paths_ignore:
+      - '*.md'
+      - 'dist/*'
 
 jobs:
   chore:
@@ -21,6 +20,8 @@ jobs:
           git config user.name "Husam's Bot"
 
           git config user.email "husamsbot@gmail.com"
+
+          git pull
 
           yarn remove husky
 
@@ -54,7 +55,7 @@ jobs:
           TIMESTAMP=`date +%s`
           BRANCH_NAME=`echo update-dist-$TIMESTAMP`
 
-          git branch $BRANCH_NAME && git checkout $BRANCH_NAME
+          git checkout -b $BRANCH_NAME
 
           rm -rf dist && cp -r tmp dist
 
@@ -90,7 +91,7 @@ jobs:
 
           git checkout gh-pages
 
-          git branch $BRANCH_NAME && git checkout $BRANCH_NAME
+          git checkout -b $BRANCH_NAME
 
           cp -rf tmp/demo/. .
 
