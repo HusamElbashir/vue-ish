@@ -1,6 +1,6 @@
 # Vue-ish
 
-[![Build Status](https://github.com/HusamIbrahim/vue-ish/actions/workflows/main.yml/badge.svg)](https://github.com/HusamElbashir/vue-ish) [![Coverage Status](https://img.shields.io/codecov/c/github/HusamIbrahim/vue-ish)](https://codecov.io/github/HusamIbrahim/vue-ish) [![License](https://img.shields.io/github/license/HusamIbrahim/vue-ish)](https://github.com/HusamIbrahim/vue-ish/blob/dev/LICENSE)
+[![Build Status](https://github.com/HusamElbashir/vue-ish/actions/workflows/main.yml/badge.svg)](https://github.com/HusamElbashir/vue-ish) [![Coverage Status](https://img.shields.io/codecov/c/github/HusamIbrahim/vue-ish)](https://codecov.io/github/HusamIbrahim/vue-ish) [![License](https://img.shields.io/github/license/HusamIbrahim/vue-ish)](https://github.com/HusamIbrahim/vue-ish/blob/dev/LICENSE)
 
 > A bare-bones implementation of Vue.js-like reactivity
 
