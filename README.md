@@ -1,6 +1,6 @@
 # Vue-ish
 
-[![Build Status](https://github.com/HusamIbrahim/vue-ish/actions/workflows/main.yml/badge.svg)](https://github.com/HusamIbrahim/vue-ish) [![Coverage Status](https://img.shields.io/codecov/c/github/HusamIbrahim/vue-ish)](https://codecov.io/github/HusamIbrahim/vue-ish) [![License](https://img.shields.io/github/license/HusamIbrahim/vue-ish)](https://github.com/HusamIbrahim/vue-ish/blob/dev/LICENSE)
+[![Build Status](https://github.com/HusamIbrahim/vue-ish/actions/workflows/main.yml/badge.svg)](https://github.com/HusamElbashir/vue-ish) [![Coverage Status](https://img.shields.io/codecov/c/github/HusamIbrahim/vue-ish)](https://codecov.io/github/HusamIbrahim/vue-ish) [![License](https://img.shields.io/github/license/HusamIbrahim/vue-ish)](https://github.com/HusamIbrahim/vue-ish/blob/dev/LICENSE)
 
 > A bare-bones implementation of Vue.js-like reactivity
 
@@ -8,7 +8,7 @@
 
 **Vue-ish** is a minimalistic library that demonstrates the most basic reactivity features in modern front-end JavaScript frameworks such as Vue.js.
 
-[Live Demo](https://husamibrahim.github.io/vue-ish)
+[Live Demo](https://husamelbashir.github.io/vue-ish)
 
 ### Motivation
 
